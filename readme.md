@@ -42,7 +42,7 @@ Given your PDFs and a question:
 3) Retrieves the top-K relevant chunks for your query.
 4) Splits retrieved text into smaller pieces and numbers them as:
    “Source 1: ...”, “Source 2: ...”, etc.
-5) Uses an OpenAI chat model (default: `gpt-4o-mini`) to synthesize a concise answer that cites sources inline as “[Source N]”.
+5) Uses an OpenAI chat model (default: `gpt-5-nano`) to synthesize a concise answer that cites sources inline as “[Source N]”.
 6) Prints the final answer, followed by a “SOURCE MAP” that maps each [Source N] to its file path and page, along with a short snippet.
 
 
@@ -57,13 +57,13 @@ Optional flags:
     --top-k <int>          Retrieval depth (default: 4)
     --chunk-size <int>     Chunk size used when splitting (default: 512)
     --chunk-overlap <int>  Overlap between chunks (default: 20)
-    --model <str>          OpenAI chat model name (default: gpt-4o-mini)
+    --model <str>          OpenAI chat model name (default: gpt-5-nano)
 
 Examples:
     python run_pdf_citations.py --pdf notes.pdf --query "Summarize key findings with citations."
     python run_pdf_citations.py --pdf a.pdf b.pdf --query "Key regulatory requirements?" --top-k 6
     python run_pdf_citations.py --pdf report.pdf --query "List assumptions and their implications." --chunk-size 400 --chunk-overlap 40
-    python run_pdf_citations.py --pdf doc.pdf --query "Provide a concise abstract." --model gpt-4o-mini
+    python run_pdf_citations.py --pdf doc.pdf --query "Provide a concise abstract." --model gpt-5-nano
 
 
 ## Expected Output
@@ -97,4 +97,4 @@ Examples:
 
 ## Notes
 - The script keeps output concise by default. You can adjust `--top-k`, `--chunk-size`, and `--chunk-overlap` to influence retrieval breadth and citation granularity.
-- The default model is `gpt-4o-mini`. You can switch to another OpenAI chat model available in your account via `--model`.
+- The default model is `gpt-5-nano`. You can switch to another OpenAI chat model available in your account via `--model`.
