@@ -5,7 +5,7 @@ answer with inline [Source N] citations. Compatible with modern LlamaIndex.
 
 Usage:
   python run_pdf_citations.py --pdf notes.pdf --query "Summarize with citations."
-  python run_pdf_citations.py --pdf a.pdf b.pdf --query "Main findings?" --top-k 4
+  python run_pdf_citations.py --pdf a.pdf b.pdf --query "Main findings?" --top-k 5
 """
 
 import argparse
@@ -40,8 +40,8 @@ from llama_index.core.schema import TextNode, NodeWithScore
 from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.openai import OpenAIEmbedding
 
-CITATION_CHUNK_SIZE = 512
-CITATION_CHUNK_OVERLAP = 20
+CITATION_CHUNK_SIZE = 80
+CITATION_CHUNK_OVERLAP = 10
 
 CITATION_QA_TEMPLATE = PromptTemplate(
     """You are a careful analyst. Use ONLY the numbered sources to answer.
@@ -184,7 +184,7 @@ def main():
     parser = argparse.ArgumentParser(description="Answer questions over local PDF(s) with inline [Source N] citations.")
     parser.add_argument("--pdf", nargs="+", required=True, help="Path(s) to one or more PDF files.")
     parser.add_argument("--query", required=True, help="Your question.")
-    parser.add_argument("--top-k", type=int, default=4, help="Retriever top_k (default: 4).")
+    parser.add_argument("--top-k", type=int, default=5, help="Retriever top_k (default: 5).")
     parser.add_argument("--chunk-size", type=int, default=CITATION_CHUNK_SIZE, help="Chunk size for citation nodes.")
     parser.add_argument("--chunk-overlap", type=int, default=CITATION_CHUNK_OVERLAP, help="Chunk overlap for citation nodes.")
     parser.add_argument("--model", default="gpt-5-nano", help="OpenAI chat model (default: gpt-5-nano).")

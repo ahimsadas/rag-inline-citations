@@ -75,9 +75,9 @@ python run_pdf_citations.py --pdf /path/a.pdf /path/b.pdf --query "What are the 
 ### Optional Flags
 | Flag | Description | Default |
 |------|-------------|---------|
-| `--top-k <int>` | Retrieval depth | 4 |
-| `--chunk-size <int>` | Chunk size used when splitting | 512 |
-| `--chunk-overlap <int>` | Overlap between chunks | 20 |
+| `--top-k <int>` | Retrieval depth | 5 |
+| `--chunk-size <int>` | Chunk size used when splitting | 80 |
+| `--chunk-overlap <int>` | Overlap between chunks | 10 |
 | `--model <str>` | OpenAI chat model name | gpt-5-nano |
 
 ### Examples
