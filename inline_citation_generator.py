@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
 Standalone runner: load local PDFs -> retrieve -> split & number sources -> synthesize
-answer with inline [Source N] citations. Compatible with modern LlamaIndex.
+answer with inline [N] citations. Compatible with modern LlamaIndex.
 
 Usage:
-  python run_pdf_citations.py --pdf notes.pdf --query "Summarize with citations."
-  python run_pdf_citations.py --pdf a.pdf b.pdf --query "Main findings?" --top-k 5
+  python inline_citation_generator.py --pdf notes.pdf --query "Summarize with citations."
+  python inline_citation_generator.py --pdf a.pdf b.pdf --query "Main findings?" --top-k 5
 """
 
 import argparse
@@ -45,7 +45,7 @@ CITATION_CHUNK_OVERLAP = 10
 
 CITATION_QA_TEMPLATE = PromptTemplate(
     """You are a careful analyst. Use ONLY the numbered sources to answer.
-Each time you use information, cite it inline as [Source N]. If multiple sources support a claim, include multiple citations.
+Each time you use information, cite it inline as [N]. If multiple sources support a claim, include multiple citations.
 
 Sources:
 {context_str}
@@ -72,7 +72,7 @@ New sources:
 {context_msg}
 
 Rules:
-- Cite using [Source N] from the new sources when you add or modify content.
+- Cite using [N] from the new sources when you add or modify content.
 - If the new sources are not helpful, return the original answer unchanged.
 
 Refined answer with inline citations:"""
@@ -165,12 +165,12 @@ async def answer_with_citations(pdf_paths: List[str],
     final_text = getattr(resp, "response", None) or getattr(resp, "text", None) or str(resp)
     print(final_text)
 
-    # 7) Show mapping for [Source N] → file/page
+    # 7) Show mapping for [N] → file/page
     print("\n" + "-" * 80)
-    print("SOURCE MAP (match these to the [Source N] citations in the answer)")
+    print("SOURCE MAP (match these to the [N] citations in the answer)")
     print("-" * 80)
     for s in source_map[:50]:
-        print(f"[Source {s['N']}] file={s['file_path']} page={s['page']} score={s['score']}")
+        print(f"[{s['N']}] file={s['file_path']} page={s['page']} score={s['score']}")
         print(f"  └─ {s['snippet']}...")
     if len(source_map) > 50:
         print(f"...and {len(source_map) - 50} more chunks.")
@@ -181,7 +181,7 @@ def main():
         print("  export OPENAI_API_KEY='sk-...'")
         sys.exit(1)
 
-    parser = argparse.ArgumentParser(description="Answer questions over local PDF(s) with inline [Source N] citations.")
+    parser = argparse.ArgumentParser(description="Answer questions over local PDF(s) with inline [N] citations.")
     parser.add_argument("--pdf", nargs="+", required=True, help="Path(s) to one or more PDF files.")
     parser.add_argument("--query", required=True, help="Your question.")
     parser.add_argument("--top-k", type=int, default=5, help="Retriever top_k (default: 5).")
