@@ -96,7 +96,7 @@ python main.py --pdf doc.pdf --query "Provide a concise abstract." --model gpt-4
 - If nothing relevant is retrieved:
   No results retrieved. Try increasing --top-k or check your PDFs.
 
-### Troubleshooting
+#### Troubleshooting
 - “Error: OPENAI_API_KEY is not set”
   Export/set the key as shown above, open a new terminal, reactivate the venv, and retry.
 
