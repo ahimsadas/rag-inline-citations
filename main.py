@@ -4,8 +4,8 @@ Standalone runner: load local PDFs -> retrieve -> split & number sources -> synt
 answer with inline [N] citations. Compatible with modern LlamaIndex.
 
 Usage:
-  python inline_citation_generator.py --pdf notes.pdf --query "Summarize with citations."
-  python inline_citation_generator.py --pdf a.pdf b.pdf --query "Main findings?" --top-k 5
+  python main.py --pdf notes.pdf --query "Summarize with citations."
+  python main.py --pdf a.pdf b.pdf --query "Main findings?" --top-k 5
 """
 
 import argparse
@@ -42,6 +42,57 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 
 CITATION_CHUNK_SIZE = 80
 CITATION_CHUNK_OVERLAP = 10
+
+# CITATION_QA_TEMPLATE = PromptTemplate(
+#     "Please provide an answer based solely on the provided sources. "
+#     "When referencing information from a source, "
+#     "cite the appropriate source(s) using their corresponding numbers. "
+#     "Every answer should include at least one source citation. "
+#     "Only cite a source when you are explicitly referencing it. "
+#     "If none of the sources are helpful, you should indicate that. "
+#     "For example:\n"
+#     "Source 1:\n"
+#     "The sky is red in the evening and blue in the morning.\n"
+#     "Source 2:\n"
+#     "Water is wet when the sky is red.\n"
+#     "Query: When is water wet?\n"
+#     "Answer: Water will be wet when the sky is red [2], "
+#     "which occurs in the evening [1].\n"
+#     "Now it's your turn. Below are several numbered sources of information:"
+#     "\n------\n"
+#     "{context_str}"
+#     "\n------\n"
+#     "Query: {query_str}\n"
+#     "Answer: "
+# )
+
+# CITATION_REFINE_TEMPLATE = PromptTemplate(
+#     "Please provide an answer based solely on the provided sources. "
+#     "When referencing information from a source, "
+#     "cite the appropriate source(s) using their corresponding numbers. "
+#     "Every answer should include at least one source citation. "
+#     "Only cite a source when you are explicitly referencing it. "
+#     "If none of the sources are helpful, you should indicate that. "
+#     "For example:\n"
+#     "Source 1:\n"
+#     "The sky is red in the evening and blue in the morning.\n"
+#     "Source 2:\n"
+#     "Water is wet when the sky is red.\n"
+#     "Query: When is water wet?\n"
+#     "Answer: Water will be wet when the sky is red [2], "
+#     "which occurs in the evening [1].\n"
+#     "Now it's your turn. "
+#     "We have provided an existing answer: {existing_answer}"
+#     "Below are several numbered sources of information. "
+#     "Use them to refine the existing answer. "
+#     "If the provided sources are not helpful, you will repeat the existing answer."
+#     "\nBegin refining!"
+#     "\n------\n"
+#     "{context_msg}"
+#     "\n------\n"
+#     "Query: {query_str}\n"
+#     "Answer: "
+# )
 
 CITATION_QA_TEMPLATE = PromptTemplate(
     """You are a careful analyst. Use ONLY the numbered sources to answer.
